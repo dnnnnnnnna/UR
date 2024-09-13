@@ -19,9 +19,15 @@ int main() {
     cin >> num_players;
 
     vector<pair<int, int>> scores; // Almacena el número de jugador y su puntaje
+    bool prime_winner_found = false; // Bandera para detectar si ya hay un ganador con número primo
 
     // Bucle principal para los jugadores
     for (int player = 1; player <= num_players; ++player) {
+        if (prime_winner_found) {
+            // Si ya hay un ganador con número primo, se detiene el juego
+            break;
+        }
+
         cout << "\nTurno del Jugador " << player << endl;
 
         // Lanzamiento inicial
@@ -85,37 +91,38 @@ int main() {
             cout << "Lanzamiento de 3 dados adicionales: " << dice_roll << ". Puntaje total ahora: " << score << endl;
         }
 
+        // Verificar si el jugador tiene un número primo y detener el juego si es así
+        if (find(primes.begin(), primes.end(), score) != primes.end()) {
+            cout << "¡El Jugador " << player << " obtuvo un número primo (" << score << ") y gana automáticamente!" << endl;
+            prime_winner_found = true;
+            break;
+        }
+
         // Registra el puntaje del jugador
         scores.push_back(make_pair(player, score));
     }
 
-    // Determinación del ganador
-    int winning_score = -1;
-    int winner = -1;
+    // Si ningún jugador ha sacado un número primo, determina el ganador por el puntaje más cercano a 23
+    if (!prime_winner_found) {
+        int winning_score = -1;
+        int winner = -1;
 
-    cout << "\nDeterminando el ganador..." << endl;
-    for (int i = 0; i < scores.size(); ++i) {
-        int player = scores[i].first;
-        int score = scores[i].second;
+        cout << "\nDeterminando el ganador..." << endl;
+        for (int i = 0; i < scores.size(); ++i) {
+            int player = scores[i].first;
+            int score = scores[i].second;
 
-        if (find(primes.begin(), primes.end(), score) != primes.end()) {
-            if (score == max_score) {
-                cout << "El Jugador " << player << " ganó con el puntaje perfecto de 23!" << endl;
+            if (score <= max_score && (winning_score < 0 || max_score - score < max_score - winning_score)) {
+                winning_score = score;
                 winner = player;
-                break;
             }
         }
 
-        if (score <= max_score && (winning_score < 0 || max_score - score < max_score - winning_score)) {
-            winning_score = score;
-            winner = player;
+        if (winner != -1) {
+            cout << "\nEl ganador es el Jugador " << winner << " con el puntaje más cercano a 23 sin pasarse: " << winning_score << endl;
+        } else {
+            cout << "No se determinó un ganador." << endl;
         }
-    }
-
-    if (winner != -1) {
-        cout << "\nEl ganador es el Jugador " << winner << " con el puntaje más cercano a 23 sin pasarse: " << winning_score << endl;
-    } else {
-        cout << "No se determinó un ganador." << endl;
     }
 
     return 0;
