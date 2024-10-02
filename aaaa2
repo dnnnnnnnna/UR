@@ -1,0 +1,86 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+const int LINEAS = 3;   // Número de líneas (blusas, faldas, jeans)
+const int MODELOS = 10; // Número máximo de modelos por línea
+
+// Inicializa el inventario con valores aleatorios entre 0 y 20
+void inicializarInventario(int inventario[LINEAS][MODELOS]) {
+    srand(time(0));  // Inicializamos el generador de números aleatorios
+
+    for (int i = 0; i < LINEAS; ++i) {
+        for (int j = 0; j < MODELOS; ++j) {
+            inventario[i][j] = rand() % 21;  // Genera un número aleatorio entre 0 y 20
+        }
+    }
+}
+
+// Función para procesar el pedido
+void procesarPedido(int inventario[LINEAS][MODELOS], int codigos[], int cantidades[], int numModelos) {
+    bool pedidoExitoso = true;
+
+    // Verificamos si el pedido se puede cumplir
+    for (int i = 0; i < numModelos; ++i) {
+        int linea = codigos[i] / 100;   // Calculamos la línea a partir del código
+        int indice = codigos[i] % 10;   // Calculamos el índice dentro de la línea
+
+        // Verificamos si hay existencias suficientes
+        if (inventario[linea][indice] < cantidades[i]) {
+            pedidoExitoso = false;
+            break;
+        }
+    }
+
+    // Si el pedido es exitoso, actualizamos el inventario
+    if (pedidoExitoso) {
+        for (int i = 0; i < numModelos; ++i) {
+            int linea = codigos[i] / 100;
+            int indice = codigos[i] % 10;
+
+            inventario[linea][indice] -= cantidades[i];  // Actualizamos el inventario
+        }
+
+        cout << "Compra exitosa. Inventario actualizado:\n";
+        for (int i = 0; i < LINEAS; ++i) {
+            cout << "Linea " << i << ": ";
+            for (int j = 0; j < MODELOS; ++j) {
+                cout << inventario[i][j] << " ";
+            }
+            cout << endl;
+        }
+    } else {
+        cout << "No se puede suplir el pedido. Existencias insuficientes.\n";
+    }
+}
+
+// Genera un código de modelo aleatorio (entre 0 y 299)
+int generarCodigoModelo() {
+    return (rand() % LINEAS) * 100 + (rand() % MODELOS);
+}
+
+int main() {
+    int inventario[LINEAS][MODELOS];  // Declaramos el array de inventario
+    inicializarInventario(inventario);  // Inicializamos el inventario
+
+    int numModelos;
+    cout << "Ingrese la cantidad de modelos que desea pedir (máx 10): ";
+    cin >> numModelos;
+
+    int codigos[numModelos];
+    int cantidades[numModelos];
+
+    // Leer los códigos de los modelos y las cantidades
+    for (int i = 0; i < numModelos; ++i) {
+        codigos[i] = generarCodigoModelo();  // Generar código aleatorio
+        cout << "El código del modelo " << i + 1 << " es: " << codigos[i] << endl;
+        cout << "Ingrese la cantidad de piezas para el modelo " << i + 1 << " (entre 1 y 5): ";
+        cin >> cantidades[i];
+    }
+
+    // Procesar el pedido
+    procesarPedido(inventario, codigos, cantidades, numModelos);
+
+    return 0;
+}​⬤
