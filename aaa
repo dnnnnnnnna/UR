@@ -1,0 +1,56 @@
+# Inicializa el inventario con los datos de la tienda
+def inicializar_inventario():
+    return [
+        [5, 7, 14, 12, 9, 1, -1, -1, -1, -1],  # Línea 0
+        [100, 101, 102, 103, 104, 105, -1, -1, -1, -1],  # Línea 1
+        [200, 201, 202, 203, 204, 205, 206, 207, 208, 209]   # Línea 2
+    ]
+
+# Función para procesar el pedido
+def procesar_pedido(inventario, codigos, cantidades):
+    pedido_exitoso = True
+
+    # Verificamos si el pedido se puede cumplir
+    for i in range(len(codigos)):
+        linea = codigos[i] // 100   # Calculamos la línea a partir del código
+        indice = codigos[i] % 10    # Calculamos el índice dentro de la línea
+
+        # Verificamos si hay existencias suficientes
+        if inventario[linea][indice] < cantidades[i]:
+            pedido_exitoso = False
+            break
+
+    # Si el pedido es exitoso, actualizamos el inventario
+    if pedido_exitoso:
+        for i in range(len(codigos)):
+            linea = codigos[i] // 100
+            indice = codigos[i] % 10
+            inventario[linea][indice] -= cantidades[i]  # Actualizamos el inventario
+
+        print("Compra exitosa. Inventario actualizado:")
+        for i, linea in enumerate(inventario):
+            print(f"Línea {i}: {linea}")
+    else:
+        print("No se puede suplir el pedido. Existencias insuficientes.")
+
+# Main
+def main():
+    inventario = inicializar_inventario()  # Inicializa el inventario
+
+    num_modelos = int(input("Ingrese la cantidad de modelos que desea pedir (máx 10): "))
+
+    codigos = []
+    cantidades = []
+
+    # Leer los códigos de los modelos y las cantidades
+    for i in range(num_modelos):
+        codigo = int(input(f"Ingrese el código del modelo {i + 1}: "))
+        cantidad = int(input(f"Ingrese la cantidad de piezas para el modelo {i + 1} (entre 1 y 5): "))
+        codigos.append(codigo)
+        cantidades.append(cantidad)
+
+    # Procesar el pedido
+    procesar_pedido(inventario, codigos, cantidades)
+
+if __name__ == "__main__":
+    main()
