@@ -1,0 +1,52 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Rendering;
+
+public class Spawn_Tubos : MonoBehaviour
+{
+    public GameObject Tubos;
+    //public GameObject BolaDeFuego;
+
+    public float tasa_spawn = 2;
+    private float timer = 0;
+    public float timer_tubos = 0;
+    public float cambio_de_Altura = 5;
+
+    public bool generarBolasDeFuego = false;
+    //private float bolaTimer = 0;
+    //public float intervaloBolasDeFuego = 2;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        spawnear_Tubo();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (timer < tasa_spawn)
+        {
+            timer = timer + Time.deltaTime;
+
+        }
+        else
+        {
+            spawnear_Tubo();
+            timer = 0;
+        }
+int cambiar_sprite_tubo(float tiempo) {
+    int tiempores = (int)tiempo % 40;
+    return (int)tiempores/10;
+}
+void spawnear_Tubo()
+{
+    float punto_mas_bajo = transform.position.y - cambio_de_Altura;
+    float punto_mas_Alto = transform.position.y + cambio_de_Altura;
+    Tubitos tub_spawneado = Tubos.GetComponent<Tubitos>();
+    tub_spawneado.tipo_tubo = cambiar_sprite_tubo(timer_tubos);
+
+    Instantiate(Tubos, new Vector3(transform.position.x, Random.Range(punto_mas_bajo, punto_mas_Alto), transform.position.z), transform.rotation);
+
+}
