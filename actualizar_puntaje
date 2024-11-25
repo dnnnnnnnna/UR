@@ -1,0 +1,66 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class actualizar_puntos : MonoBehaviour
+{
+    public int puntaje_Jugador;
+    public Text puntaje_Texto;
+    public GameObject game_Over;
+    public GameObject p_final;
+    public GameObject mejor_puntaje;
+    public ParticleSystem confettiEfecto;
+
+    void Start()
+    {
+        if (!PlayerPrefs.HasKey("MejorPuntaje"))
+        {
+            PlayerPrefs.SetInt("MejorPuntaje", 0);
+        }
+        int mejorPuntajeGuardado = PlayerPrefs.GetInt("MejorPuntaje", 0);
+        Text mejorPuntajeTexto = mejor_puntaje.GetComponent<Text>();
+        mejorPuntajeTexto.text = mejorPuntajeGuardado.ToString();
+
+        if (confettiEfecto.isPlaying)
+        {
+            confettiEfecto.Stop();
+        }
+    }
+
+    [ContextMenu("Aumentar Puntaje")]
+    public void agregar_Puntaje()
+    {
+        puntaje_Jugador = puntaje_Jugador + 1;
+        puntaje_Texto.text = puntaje_Jugador.ToString();
+    }
+
+    public void reiniciar_Juego()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    }
+
+    public void gameOver()
+    {
+        game_Over.SetActive(true);
+        Text p_fin = p_final.GetComponent<Text>();
+        p_fin.text = puntaje_Jugador.ToString();
+
+        int mejorPuntajeGuardado = PlayerPrefs.GetInt("MejorPuntaje", 0);
+
+        if (puntaje_Jugador > mejorPuntajeGuardado)
+        {
+            PlayerPrefs.SetInt("MejorPuntaje", puntaje_Jugador);
+            mejorPuntajeGuardado = puntaje_Jugador;
+            if (confettiEfecto != null && !confettiEfecto.isPlaying)
+            {
+                confettiEfecto.Play();
+            }
+        }
+
+        Text mejorPuntajeTexto = mejor_puntaje.GetComponent<Text>();
+        mejorPuntajeTexto.text = mejorPuntajeGuardado.ToString();
+    }
+}
