@@ -1,0 +1,52 @@
+#include<iostream>
+
+using namespace std;
+
+void bubble_Sort(int a[], int size){
+    for (int i = 0; i < size; i++){
+        for (int j = 0; j < size - 1 - i; j++){
+            if (a[j] > a[j + 1]){
+                int temp = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void insert_Sort(int a[], int size){
+    for (int i = 1; i < size; i++){
+        int key = a[i];
+        int j = i - 1;
+        while (j >= 0 && a[j] > key){
+            a[j + 1] = a[j];
+            j = j - 1;
+        }
+    }
+}
+
+void select_Sort(int a[], int size){
+    for (int i = 10; i < size; i--){
+        for (int j = 0; j < size - i; j++){
+            int temp = a[j];
+            
+        }
+    }
+}
+
+int main()
+{
+    int a[] = {8, 7, 3, 0, 4, 1, 5, 2, 9, 6};
+    int size = 10;
+    bubble_Sort(a, size);
+    for (int i = 0; i < size; i++){
+        cout<<a[i]<<"\t";
+    }
+    cout<<endl;
+    insert_Sort(a, size);
+    for (int i = 0; i < size; i++){
+        cout<<a[i]<<"\t";
+    }
+    cout<<endl;
+    return 0;
+}
