@@ -3,10 +3,10 @@
 using namespace std;
 
 void bubble_Sort(int a[], int size){
-    for (int i = 0; i < size; i++){
-        for (int j = 0; j < size - 1 - i; j++){
-            if (a[j] > a[j + 1]){
-                int temp = a[j];
+    for (int i = 0; i < size; i++){                 //Recorre todo el vector
+        for (int j = 0; j < size - 1 - i; j++){     //Recorre el vector pero hasta el tamaño - 1 (pq la posición final no tendrá otro # al lado para cambiar) - i
+            if (a[j] > a[j + 1]){                   //Si el número en la posición j en mayor al número en la posiciónn j + 1 (la siguiente)
+                int temp = a[j];                    //Hace el cambio
                 a[j] = a[j + 1];
                 a[j + 1] = temp;
             }
@@ -15,38 +15,58 @@ void bubble_Sort(int a[], int size){
 }
 
 void insert_Sort(int a[], int size){
-    for (int i = 1; i < size; i++){
-        int key = a[i];
-        int j = i - 1;
-        while (j >= 0 && a[j] > key){
-            a[j + 1] = a[j];
-            j = j - 1;
+    for (int i = 1; i < size; i++){                 //Recorre el vector. Queremos que inicie desde la posición 1
+        int key = a[i];                             // Asignamos la "llave" como la posición i
+        int j = i - 1;                              //j será el número en la posición anteior a i
+        while (j >= 0 && a[j] > key){               //Mientras que j sea mayor igual q 0 y el número en la posición j sea mayor que la key
+            a[j + 1] = a[j];                        //Hará el cambio
+            j = j - 1;                              //Mueve j una posición atrás
         }
     }
 }
 
 void select_Sort(int a[], int size){
-    for (int i = 10; i < size; i--){
-        for (int j = 0; j < size - i; j++){
-            int temp = a[j];
-            
+    for (int i = 0; i < size; i++){                 //Recorre el vector
+        int min_pos = i;                            //Asignamos el valor actual como la posición con el valor más pequeño    
+        for (int j = i + 1; j < size; j++){         //Recorre el vector pero una posición más a i
+            if (a[j] < a[min_pos]){                 //Si el número en la posición j es mayor que el número mínimo de la posición i, 
+                min_pos = j;                        //j pasará a ser el número más pequeño
+            }
+        }
+        if (min_pos != i){                          //Si el supuesto número más pequeño es diferente de la posición i actual,
+        int temp = a[i];                            //Hará el cambio
+        a[i] = a[min_pos];
+        a[min_pos] = temp;
         }
     }
 }
 
 int main()
 {
-    int a[] = {8, 7, 3, 0, 4, 1, 5, 2, 9, 6};
+    int a[] = {7, 8, 3, 0, 4, 1, 5, 2, 9, 6};
     int size = 10;
+    
     bubble_Sort(a, size);
+    cout<<"Bubble sort: "<<"\t";
     for (int i = 0; i < size; i++){
         cout<<a[i]<<"\t";
     }
     cout<<endl;
+    
     insert_Sort(a, size);
+    cout<<"Insert sort: "<<"\t";
     for (int i = 0; i < size; i++){
         cout<<a[i]<<"\t";
     }
     cout<<endl;
+    
+    select_Sort(a, size);
+    cout<<"Select sort: "<<"\t";
+    for (int i = 0; i < size; i++){
+        cout<<a[i]<<"\t";
+    }
+    cout<<endl;
+    
+    
     return 0;
 }
