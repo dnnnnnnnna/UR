@@ -42,6 +42,8 @@ void select_Sort(int a[], int size){
     }
 }
 
+//Quick sort
+
 int partition(int a[], int low, int high){
     int pivot_value = a[high];
     int i = low;
