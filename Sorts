@@ -41,6 +41,10 @@ void select_Sort(int a[], int size){
     }
 }
 
+void quick_Sort(int a[], int low, int high){
+    
+}
+
 int main()
 {
     int a[] = {7, 8, 3, 0, 4, 1, 5, 2, 9, 6};
