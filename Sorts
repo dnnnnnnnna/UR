@@ -1,4 +1,5 @@
 #include<iostream>
+#include <utility>
 
 using namespace std;
 
@@ -41,8 +42,30 @@ void select_Sort(int a[], int size){
     }
 }
 
-void quick_Sort(int a[], int low, int high){
+int partition(int a[], int low, int high){
+    int pivot_value = a[high];
+    int i = low;
     
+    for (int j = low; j < high; j++){
+        if (a[j] <= pivot_value){
+            swap(a[i], a[j]);
+            i++;
+        }
+    }
+    swap(a[i], a[high]);
+    return i;
+}
+
+void quicksort_recursion(int a[], int low, int high){
+    if (low < high){
+        int pivot_index = partition(a, low, high);
+        quicksort_recursion(a, low, pivot_index - 1);
+        quicksort_recursion(a, pivot_index + 1, high);
+    }
+}
+
+void quick_Sort(int a[], int size){
+    quicksort_recursion(a, 0, size - 1);
 }
 
 int main()
@@ -71,6 +94,12 @@ int main()
     }
     cout<<endl;
     
+    quick_Sort(a, size);
+    cout<<"Quick sort: "<<"\t";
+    for (int i = 0; i < size; i++){
+        cout<<a[i]<<"\t";
+    }
+    cout<<endl;
     
     return 0;
 }
